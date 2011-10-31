@@ -109,10 +109,13 @@ namespace MonoDroid.ContentProviderDemo
 
                 case LOCATION_ID:
                     String locationId = uri.PathSegments.ElementAt(1);
+                    string select = "";
+                    if (selection != null)
+                        if (selection.Length > 0) select = " AND (" + selection + ")";
                     count = db.Delete(
                         DATABASE_TABLE_NAME,
-                        _ID + "=" + locationId
-                        + ((selection.Length > 0) ? " AND (" + selection + ')' : ""), selectionArgs);
+                        _ID + "=" + locationId + select,
+                        selectionArgs);
                     break;
 
                 default:
@@ -241,8 +244,15 @@ namespace MonoDroid.ContentProviderDemo
 
                 case LOCATION_ID:
                     String locationId = uri.PathSegments.ElementAt(1);
-                    count = db.Update(DATABASE_TABLE_NAME, values, _ID + "=" + locationId
-                            + ((selection.Length > 0) ? " AND (" + selection + ')' : ""), selectionArgs);
+                    string select = "";
+                    if (selection != null)
+                        if (selection.Length > 0) select = " AND (" + selection + ")";
+
+                    count = db.Update(
+                        DATABASE_TABLE_NAME,
+                        values,
+                        _ID + "=" + locationId + select,
+                        selectionArgs);
                     break;
 
                 default:
